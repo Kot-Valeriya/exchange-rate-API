@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+    database:
+        image: postgres:13-alpine
+        environment:
+            POSTGRES_USER: Valeriya_Kot
+            POSTGRES_PASSWORD: exchange-rate-API
+            POSTGRES_DB: exchange-rate-API
+        ports: [5432]
+
+    redis:
+      image: redis:5-alpine
+      ports: [6379]
