@@ -22,6 +22,9 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+    App\ExchangeRateHelper:
+        arguments:
+            $client: '@.debug.http_client'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

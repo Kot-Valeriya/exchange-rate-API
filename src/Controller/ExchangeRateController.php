@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\ExchangeRate;
 use App\ExchangeRateHelper;
-use App\Repository\ExchangeRateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,23 +29,55 @@ class ExchangeRateController extends AbstractController {
 	 * @Route("/exchange/rate", name="exchange_rate")
 	 */
 	public function index(ExchangeRateHelper $helper, HttpClientInterface $client): Response{
+		$startDate = new \DateTime('1 month ago');
+		$endDate = new \DateTime('now');
+		$interval = \DateInterval::createFromDateString('1 day');
+		$period = new \DatePeriod($startDate, $interval, $endDate);
+		$exchangeRateArray1 = [];
+		foreach ($period as $date) {
+			$date = $date->format('Y-m-d');
+			$filteredResponseArr =
+				array_intersect_key(
+				$this->getExchangeRates($date, $client),
+				$this->getCurrencyKeys($this->getExchangeRates($date, $client)));
+
+			$exchangeRateArray = [];
+			foreach ($filteredResponseArr as $rate) {
+//date('Ymd', strtotime($rate['exchangedate']))
+				$exchangeRate = new ExchangeRate();
+				$exchangeRateArray[] =
+				$exchangeRate
+					->setDate(\DateTime::createFromFormat('d.m.Y', $rate['exchangedate'], new \DateTimeZone('Europe/Kiev')))
+					->setCurrency($rate['cc'])
+					->setAmount($rate['rate']);
+			}
+			$exchangeRateArray1[] = $exchangeRateArray;
+		}
+
+		dd($exchangeRateArray1);
+	}
+	public function getExchangeRates($inputDate, HttpClientInterface $client, $valcode = 'EUR'): array
+	{
+		$exchangeRateUrl = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?json';
+		$date = date('Ymd', strtotime($inputDate));
+
 		$response = $client->request(
 			'GET',
-			'https://bank.gov.ua/NBU_Exchange/exchange?json'
+			$exchangeRateUrl . ($valcode ?
+				'?valcode=' . $valcode . '&date=' . $date :
+				'?date=' . $date)
 		);
-		$content = $response->toArray();
+
+		return $response->toArray();
+	}
+
+	private function getCurrencyKeys($content): array
+	{
 		$keys = array();
 		foreach (self::CURRENCY_NAMES as $key => $val) {
 			$keys[] = array_search($key, array_column($content, 'CurrencyCodeL'));
 		}
-
-		$date = strtotime('2009-02-15');
-		//$date_in = getDate($date);
-
-		dd(date('Ymd', $date), array_intersect_key($content, array_flip($keys)));
-
-		return $content;
-
+		return $keys;
 	}
 
 /**
@@ -64,17 +96,5 @@ class ExchangeRateController extends AbstractController {
 
 		dd($response->toArray());
 	}
-	/*
-		 * @Route("all/{currency}", name="get_all_exchange_rates", methods={"GET"})
-	*/
-	public function getExchangeRatesAction(ExchangeRateRepository $exchangeRateRepository, $currency = null) {
-		$searchCriteria = $currency ? ['currency' => $currency] : [];
-		return $this->response($exchangeRateRepository->findBy($searchCriteria, ['date' => 'DESC']));
-	}
 
-	public function response(array $responseArray) {
-		return $this->json(array_map(function (ExchangeRate $exchangeRate): array{
-			return $exchangeRate->toArray();
-		}, $responseArray));
-	}
 }
