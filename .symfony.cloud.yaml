@@ -1,0 +1,10 @@
+#                                                           #
+
+# Cron job to allow me to run command every day at 1h01 AM
+#timezone: Europe/Kiev
+#
+#crons:
+#    update_rates:
+#        spec: 1 1 * * *
+#        cmd: croncape bin/console app:update-exchange-rates
+#

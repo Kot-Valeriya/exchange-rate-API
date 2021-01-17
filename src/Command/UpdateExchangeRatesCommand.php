@@ -5,11 +5,15 @@ namespace App\Command;
 use App\ExchangeRateHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class UpdateExchangeRatesCommand extends Command {
+
+	use LockableTrait;
+
 	protected static $defaultName = 'app:update-exchange-rates';
 	private $entityManager;
 	private $helper;
@@ -27,7 +31,13 @@ class UpdateExchangeRatesCommand extends Command {
 		;
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output): int{
+	protected function execute(InputInterface $input, OutputInterface $output): int {
+
+		if (!$this->lock()) {
+			$output->writeln('The command is already running in another process.');
+
+			return Command::SUCCESS;
+		}
 
 		$io = new SymfonyStyle($input, $output);
 		$date = new \DateTime('now');
@@ -38,6 +48,7 @@ class UpdateExchangeRatesCommand extends Command {
 		$this->entityManager->flush();
 
 		$io->success('Exchange rates updated successfully');
+		$this->release();
 		return Command::SUCCESS;
 	}
 }
