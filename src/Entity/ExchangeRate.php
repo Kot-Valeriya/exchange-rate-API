@@ -65,4 +65,13 @@ class ExchangeRate {
 		return $this;
 	}
 
+	/*public function serializeExchangeRate(): array
+		{
+			return array(
+				'date' => $this->getDate(),
+				'currency' => $this->getCurrency(),
+				'amount' => $this->getAmount(),
+			);
+	*/
+
 }

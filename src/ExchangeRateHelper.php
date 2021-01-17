@@ -10,11 +10,6 @@ class ExchangeRateHelper {
 	private $client;
 	private $endpoint;
 
-	public function __construct(HttpClientInterface $client, string $exchangeRateUrl) {
-		$this->client = $client;
-		$this->endpoint = $exchangeRateUrl;
-	}
-
 	const CURRENCY_NAMES = [
 		'EUR' => 'Євро',
 		'GBP' => 'Фунт стерлінгів',
@@ -29,6 +24,11 @@ class ExchangeRateHelper {
 		'CZK' => 'Чеська крона',
 		'CHF' => 'Швейцарський франк',
 	];
+
+	public function __construct(HttpClientInterface $client, string $exchangeRateUrl) {
+		$this->client = $client;
+		$this->endpoint = $exchangeRateUrl;
+	}
 
 	public function getAllExchangeRates(): array
 	{
@@ -50,8 +50,8 @@ class ExchangeRateHelper {
 		$response = $this->client->request(
 			'GET',
 			$this->endpoint . ($valcode ?
-				'?valcode=' . $valcode . '&date=' . $date :
-				'?date=' . $date)
+				'?valcode=' . $valcode . '&date=' . $date . '&json' :
+				'?date=' . $date . '&json')
 		);
 
 		return $response->toArray();
@@ -91,9 +91,5 @@ class ExchangeRateHelper {
 		}
 
 		return $exchangeRateArray;
-	}
-
-	public static function create() {
-		return new self();
 	}
 }
