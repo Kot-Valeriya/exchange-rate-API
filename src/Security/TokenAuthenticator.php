@@ -56,7 +56,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator {
 
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception) {
 		return new JsonResponse([
-			'message' => $exception->getMessageKey(),
+			'message' => 'failure',
 		], 401);
 	}
 
