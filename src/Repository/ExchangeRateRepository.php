@@ -18,24 +18,12 @@ class ExchangeRateRepository extends ServiceEntityRepository {
 		parent::__construct($registry, ExchangeRate::class);
 	}
 
-	// /**
-	//  * @return ExchangeRate[] Returns an array of ExchangeRate objects
-	//  */
-	/*
-	    public function findByExampleField($value)
-	    {
-	        return $this->createQueryBuilder('e')
-	            ->andWhere('e.exampleField = :val')
-	            ->setParameter('val', $value)
-	            ->orderBy('e.id', 'ASC')
-	            ->setMaxResults(10)
-	            ->getQuery()
-	            ->getResult()
-	        ;
-	    }
-*/
-
-	public function findOneBySomeField($startDate, $endDate, $currency = null) {
+	public function findOneBySomeField($startDateString, $endDateString, $currency = null) {
+		///getting criterias or assigning to default
+		$startDate = \DateTime::createFromFormat('d.m.Y', $startDateString);
+		$endDate = \DateTime::createFromFormat('d.m.Y', $endDateString);
+		$startDate = $startDate ? $startDate : new \DateTime('1 month ago');
+		$endDate = $endDate ? $endDate : new \DateTime('now');
 
 		$query = $this->createQueryBuilder('rate')
 			->where('rate.date >= :startDate')
@@ -44,10 +32,10 @@ class ExchangeRateRepository extends ServiceEntityRepository {
 			->setParameter('endDate', $endDate);
 
 		if ($currency) {
-			$query->andWhere('exchangeRate.currency = :currency')
+			$query->andWhere('rate.currency = :currency')
 				->setParameter('currency', $currency);
 		}
-		return $query->orderBy('exchangeRate.date', 'DESC')
+		return $query->orderBy('rate.date', 'DESC')
 			->getQuery()
 			->getResult();
 	}

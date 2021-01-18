@@ -11,18 +11,18 @@ class ExchangeRateHelper {
 	private $endpoint;
 
 	const CURRENCY_NAMES = [
-		'EUR' => 'Євро',
-		'GBP' => 'Фунт стерлінгів',
-		'PLN' => 'Злотий',
-		'USD' => 'Долар США',
-		'BYN' => 'Білоруський рубль',
-		'RUB' => 'Російський рубль',
-		'DKK' => 'Данська крона',
-		'JPY' => 'Єна',
-		'AUD' => 'Австралійський долар',
-		'CAD' => 'Канадський долар',
-		'CZK' => 'Чеська крона',
-		'CHF' => 'Швейцарський франк',
+		'EUR' => 'European Euro',
+		'GBP' => 'British Pound',
+		'PLN' => 'Polish zloty',
+		'USD' => 'U.S. Dollar',
+		'BYN' => 'Belarusian ruble',
+		'RUB' => 'Russian ruble',
+		'DKK' => 'Danish krone',
+		'JPY' => 'Japanese yen',
+		'AUD' => 'Australian dollar',
+		'CAD' => 'Canadian dollar',
+		'CZK' => 'Czech koruna',
+		'CHF' => 'Swiss franc',
 	];
 
 	public function __construct(HttpClientInterface $client, string $exchangeRateUrl) {
