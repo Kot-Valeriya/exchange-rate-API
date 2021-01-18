@@ -29,12 +29,6 @@ class User implements UserInterface {
 	private $roles = [];
 
 	/**
-	 * @var string The hashed password
-	 * @ORM\Column(type="string")
-	 */
-	private $password;
-
-	/**
 	 * @ORM\Column(type="string", length=255, unique=true, nullable=true)
 	 */
 	private $apiToken;
@@ -84,13 +78,11 @@ class User implements UserInterface {
 	 * @see UserInterface
 	 */
 	public function getPassword(): string {
-		return (string) $this->password;
+		return null;
 	}
 
-	public function setPassword(string $password): self{
-		$this->password = $password;
-
-		return $this;
+	public function setPassword(string $password): self {
+		return null;
 	}
 
 	/**
