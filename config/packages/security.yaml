@@ -27,4 +27,4 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/archive, roles: [IS_AUTHENTICATED_FULLY, ROLE_USER] }
-        #- { path: ^/currencies, roles: [IS_AUTHENTICATED_FULLY, ROLE_USER] }
+        - { path: ^/currencies, roles: [IS_AUTHENTICATED_FULLY, ROLE_USER] }

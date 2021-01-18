@@ -12,27 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExchangeRateController extends AbstractController {
 
-	public function response(array $responseArray) {
-
-		return $this->json(array_map(function (ExchangeRate $exchangeRate) {
-
-			return $exchangeRate->serializeExchangeRate();
-		}, $responseArray));
-	}
-
-	/**
-	 * @Route("currencies/{currency}", name="get_exchange_rate", methods={"GET"})
-	 * @param ExchangeRateRepository $exchangeRateRepository
-	 * @param null $currency
-	 * @return \Symfony\Component\HttpFoundation\JsonResponse
-	 */
-	public function getExchangeRatesAction(ExchangeRateRepository $exchangeRateRepository, $currency = null) {
-
-		$searchCriteria = $currency ? ['currency' => $currency] : [];
-
-		return $this->response($exchangeRateRepository->findBy($searchCriteria, ['date' => 'DESC']));
-	}
-
 	/**
 	 * @Route("currencies", name="get_all_currencies", methods={"GET"})
 	 * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -46,6 +25,19 @@ class ExchangeRateController extends AbstractController {
 			];
 		}
 		return $this->json($responseArray);
+	}
+
+	/**
+	 * @Route("currencies/{currency}", name="get_exchange_rate", methods={"GET"})
+	 * @param ExchangeRateRepository $exchangeRateRepository
+	 * @param null $currency
+	 * @return \Symfony\Component\HttpFoundation\JsonResponse
+	 */
+	public function getExchangeRatesAction(ExchangeRateRepository $exchangeRateRepository, $currency = null) {
+
+		$searchCriteria = $currency ? ['currency' => $currency] : [];
+
+		return $this->response($exchangeRateRepository->findBy($searchCriteria, ['date' => 'DESC']));
 	}
 
 	/**
@@ -63,5 +55,13 @@ class ExchangeRateController extends AbstractController {
 		$currency = !array_key_exists('currency', $criterias) ? null : str_replace('"', '', $criterias['currency']);
 
 		return $this->response($exchangeRateRepository->findOneBySomeField($startDate, $endDate, $currency));
+	}
+
+	public function response(array $responseArray) {
+
+		return $this->json(array_map(function (ExchangeRate $exchangeRate) {
+
+			return $exchangeRate->serializeExchangeRate();
+		}, $responseArray));
 	}
 }

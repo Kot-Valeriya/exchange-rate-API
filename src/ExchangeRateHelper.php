@@ -62,7 +62,7 @@ class ExchangeRateHelper {
 	{
 		$keys = array();
 		foreach (self::CURRENCY_NAMES as $key => $val) {
-			$keys[] = array_search($key, array_column($content, 'CurrencyCodeL'));
+			$keys[] = array_search($key, array_column($content, 'cc'));
 		}
 		return $keys;
 	}
@@ -77,7 +77,7 @@ class ExchangeRateHelper {
 		$filteredResponseArr =
 			array_intersect_key(
 			$content,
-			$this->getCurrencyKeys($content)
+			array_flip($this->getCurrencyKeys($content))
 		);
 
 		$exchangeRateArray = [];
