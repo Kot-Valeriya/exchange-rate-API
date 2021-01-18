@@ -73,16 +73,17 @@ class User implements UserInterface {
 
 		return $this;
 	}
+	/**
+	 * @see UserInterface
+	 */
+	public function getPassword() {
+	}
 
 	/**
 	 * @see UserInterface
 	 */
-	public function getPassword(): string {
-		return null;
-	}
+	public function setPassword(string $password) {
 
-	public function setPassword(string $password): self {
-		return null;
 	}
 
 	/**
