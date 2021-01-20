@@ -1,0 +1,8 @@
+ExchangeRatesList:
+  type: object
+  config:
+    description: "A query to return list of exchange rates"
+    fields:
+      exchangeRates:
+        type: "[ExchangeRate]"
+        description: "Exchange rates details"

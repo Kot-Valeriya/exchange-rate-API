@@ -1,0 +1,17 @@
+ExchangeRate:
+ type: object
+ config:
+  description: "Exchange rate "
+  fields:
+    id:
+      type: "Int"
+      description: "The unique ID of the exchange rate."
+    date:
+      type: "String"
+      description: "Date of specified rates."
+    currency:
+      type: "String"
+      description: "Currency"
+    amount:
+      type: "String"
+      description: "Amount"

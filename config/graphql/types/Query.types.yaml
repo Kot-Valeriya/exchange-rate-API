@@ -1,0 +1,25 @@
+Query:
+  type: object
+  config:
+    description: "ExchangeRates ORM repository"
+    fields:
+      ExchangeRate:
+        type: "ExchangeRate"
+        args:
+          currency:
+            description: "Resolves using the specified currency"
+            type: "String"
+        resolve: "@=resolver('ExchangeRate', [args])"
+      ExchangeRatesList:
+        type: "ExchangeRatesList"
+        args:
+          startDate:
+            description: "Start date"
+            type: "String"
+          endDate:
+            description: "End date"
+            type: "String"
+          currency:
+            description: "Currency"
+            type: "String"
+        resolve: "@=resolver('ExchangeRatesList', [args])"

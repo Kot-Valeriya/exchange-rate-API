@@ -35,3 +35,5 @@ services:
     get_set_method_normalizer:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
         tags: [serializer.normalizer]
+
+    Doctrine\ORM\EntityManager: "@doctrine.orm.default_entity_manager"

@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ExchangeRateRepository::class)
  */
+#[Type]
 class ExchangeRate {
 	/**
 	 * @ORM\Id
@@ -34,7 +35,9 @@ class ExchangeRate {
 	public function getId():  ? int {
 		return $this->id;
 	}
-
+	/**
+	 * @Field
+	 */
 	public function getDate() :  ? \DateTimeInterface {
 		return $this->date;
 	}
