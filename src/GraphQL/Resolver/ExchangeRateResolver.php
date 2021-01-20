@@ -20,7 +20,7 @@ class ExchangeRateResolver implements ResolverInterface, AliasedInterface {
 
 	public function resolve(Argument $args) {
 
-		$rate = $this->em->getRepository('App:ExchangeRate')->findBy(['currency' => $args['currency']]);
+		$rate = $this->em->getRepository('App:ExchangeRate')->findOneBy(['currency' => $args['currency']]);
 
 		return $rate;
 	}
