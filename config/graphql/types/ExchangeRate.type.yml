@@ -7,7 +7,7 @@ ExchangeRate:
       type: "Int"
       description: "The unique ID of the exchange rate."
     date:
-      type: "String"
+      type: "DateTime"
       description: "Date of specified rates."
     currency:
       type: "String"

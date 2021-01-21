@@ -32,6 +32,13 @@ services:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
+    App\GraphQL\Type\DateTimeType:
+        tags:
+            - { name: api_platform.graphql.type }
+
+    App\GraphQL\Type\TypeConverter:
+        decorates: api_platform.graphql.type_converter
+
     get_set_method_normalizer:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
         tags: [serializer.normalizer]
